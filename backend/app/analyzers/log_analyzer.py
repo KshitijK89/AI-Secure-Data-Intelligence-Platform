@@ -33,7 +33,7 @@ class LogAnalyzer:
                 "description": "API key exposure"
             },
             "password": {
-                "regex": r'(?i)(password|passwd|pwd|pass)\s*[:=]\s*["\']?([^\s"\']{3,})["\']?',
+                "regex": r'(?i)\b(password|passwd|pwd|pass)\s*(?:[:=]|\bis\b)\s*["\']?([^\s"\']{3,})["\']?',
                 "risk": "critical",
                 "description": "Password in plain text"
             },
