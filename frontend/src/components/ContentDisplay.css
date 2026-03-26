@@ -1,0 +1,238 @@
+.content-display {
+  background: rgba(28, 28, 30, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.content-display:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+.content-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.content-icon {
+  font-size: 1.5rem;
+}
+
+.content-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.content-meta {
+  font-size: 0.875rem;
+  color: #8e8e93;
+  font-weight: 400;
+}
+
+.expand-button {
+  background: none;
+  border: none;
+  color: #0a84ff;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.expand-button:hover {
+  background: rgba(10, 132, 255, 0.1);
+}
+
+.content-body {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toolbar-label {
+  font-size: 0.8125rem;
+  color: #8e8e93;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.copy-button {
+  background: rgba(10, 132, 255, 0.15);
+  border: 1px solid rgba(10, 132, 255, 0.3);
+  color: #0a84ff;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-button:hover {
+  background: rgba(10, 132, 255, 0.25);
+  border-color: rgba(10, 132, 255, 0.5);
+}
+
+.copy-button:active {
+  transform: scale(0.95);
+}
+
+.content-code {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.content-code::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.content-code::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.content-code::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.content-code::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.content-code pre {
+  margin: 0;
+  padding: 1rem;
+  font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #e5e5e7;
+}
+
+.content-code code {
+  display: block;
+}
+
+.code-line {
+  display: flex;
+  min-height: 1.6em;
+}
+
+.line-number {
+  flex-shrink: 0;
+  width: 3.5rem;
+  padding-right: 1rem;
+  text-align: right;
+  color: #636366;
+  user-select: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.line-content {
+  flex: 1;
+  padding-left: 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Syntax highlighting classes */
+.language-sql .line-content {
+  color: #ffa07a;
+}
+
+.language-log .line-content {
+  color: #98d8c8;
+}
+
+.language-python .line-content {
+  color: #8dd4f7;
+}
+
+.language-javascript .line-content {
+  color: #ffd700;
+}
+
+.language-json .line-content {
+  color: #d4d4d4;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .content-header {
+    padding: 1rem;
+  }
+
+  .header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .content-meta {
+    font-size: 0.75rem;
+  }
+
+  .content-body {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .content-code {
+    max-height: 400px;
+  }
+
+  .line-number {
+    width: 2.5rem;
+  }
+}

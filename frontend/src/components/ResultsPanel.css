@@ -1,0 +1,208 @@
+.results-panel {
+  background: rgba(28, 28, 30, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.results-header h2 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.action-badge {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.action-allowed {
+  color: #28a745;
+}
+
+.action-masked {
+  color: #ffc107;
+}
+
+.action-blocked {
+  color: #dc3545;
+}
+
+.filter-section {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  color: #ffffff;
+}
+
+.filter-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.filter-btn.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.filter-btn.critical.active {
+  background: #dc3545;
+  border-color: #dc3545;
+}
+
+.filter-btn.high.active {
+  background: #fd7e14;
+  border-color: #fd7e14;
+}
+
+.filter-btn.medium.active {
+  background: #ffc107;
+  border-color: #ffc107;
+}
+
+.filter-btn.low.active {
+  background: #28a745;
+  border-color: #28a745;
+}
+
+.findings-list {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.finding-card {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 12px;
+  border-left: 3px solid;
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.finding-card:hover {
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.finding-card.critical-risk {
+  border-left-color: #dc3545;
+}
+
+.finding-card.high-risk {
+  border-left-color: #fd7e14;
+}
+
+.finding-card.medium-risk {
+  border-left-color: #ffc107;
+}
+
+.finding-card.low-risk {
+  border-left-color: #28a745;
+}
+
+.finding-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.finding-icon {
+  font-size: 1.25rem;
+}
+
+.finding-type {
+  font-weight: 600;
+  color: #ffffff;
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.finding-risk {
+  padding: 0.25rem 0.6rem;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.finding-line {
+  padding: 0.25rem 0.6rem;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.08);
+  font-family: monospace;
+  color: #8e8e93;
+}
+
+.finding-content {
+  padding-left: 2rem;
+}
+
+.finding-context, .finding-value {
+  margin-bottom: 0.6rem;
+}
+
+.finding-context code, .finding-value code {
+  display: block;
+  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+  overflow-x: auto;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.no-findings {
+  text-align: center;
+  padding: 2.5rem;
+  color: #8e8e93;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .filter-section {
+    flex-direction: column;
+  }
+
+  .filter-btn {
+    width: 100%;
+  }
+}
