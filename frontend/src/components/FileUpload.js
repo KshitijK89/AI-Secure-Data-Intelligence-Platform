@@ -46,8 +46,10 @@ const FileUpload = () => {
     formData.append('block_high_risk', options.block_high_risk);
     formData.append('log_analysis', options.log_analysis);
 
+    const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+
     try {
-      const response = await axios.post('http://127.0.0.1:8000/analyze', formData, {
+      const response = await axios.post(`${API_URL}/analyze`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
