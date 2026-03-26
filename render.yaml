@@ -3,11 +3,12 @@ services:
     name: ai-secure-backend
     env: python
     rootDir: backend
+    pythonVersion: "3.11.11"
     buildCommand: "pip install -r requirements.txt"
     startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
     envVars:
       - key: PYTHON_VERSION
-        value: "3.10.0"
+        value: "3.11.11"
       - key: GEMINI_API_KEY
         sync: false
       - key: GROQ_API_KEY
