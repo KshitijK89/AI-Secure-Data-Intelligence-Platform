@@ -11,20 +11,19 @@
 
 /* Backend status indicator */
 .backend-status {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 6px;
-  margin-top: 16px;
-  padding: 5px 14px;
+  padding: 6px 14px;
   border-radius: 20px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 500;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
   transition: all 0.3s ease;
-  width: fit-content;
-  align-self: center;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .backend-status.warming {
@@ -247,9 +246,6 @@
 }
 
 .tab-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   animation: fadeIn 0.5s ease;
 }
 
