@@ -42,10 +42,6 @@ function HomePage() {
             <span className="feature-tag">⚡ Real-time</span>
             <span className="feature-tag">🤖 AI Insights</span>
           </div>
-          <div className={`backend-status ${backendReady ? 'ready' : 'warming'}`}>
-            <span className="status-dot"></span>
-            <span>{backendReady ? 'Backend Ready' : 'Warming up backend...'}</span>
-          </div>
         </div>
         
         <div className="input-tabs">
