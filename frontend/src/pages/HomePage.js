@@ -14,7 +14,6 @@ function HomePage() {
     fetch(`${API_URL}/health`)
       .then(() => setBackendReady(true))
       .catch(() => {
-        // Retry once after 3s if first ping fails (cold start still booting)
         setTimeout(() => {
           fetch(`${API_URL}/health`)
             .then(() => setBackendReady(true))
@@ -42,10 +41,6 @@ function HomePage() {
             <span className="feature-tag">⚡ Real-time</span>
             <span className="feature-tag">🤖 AI Insights</span>
           </div>
-          <div className={`backend-status ${backendReady ? 'ready' : 'warming'}`}>
-            <span className="status-dot"></span>
-            <span>{backendReady ? 'Backend Ready' : 'Warming up backend...'}</span>
-          </div>
         </div>
         
         <div className="input-tabs">
@@ -67,6 +62,10 @@ function HomePage() {
 
         <div className="tab-content">
           {activeTab === 'file' ? <FileUpload /> : <ChatInput />}
+          <div className={`backend-status ${backendReady ? 'ready' : 'warming'}`}>
+            <span className="status-dot"></span>
+            <span>{backendReady ? 'Backend Ready' : 'Warming up backend...'}</span>
+          </div>
         </div>
       </div>
     </div>
