@@ -7,12 +7,20 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 
 function HomePage() {
   const [activeTab, setActiveTab] = useState('file');
+  const [backendReady, setBackendReady] = useState(false);
 
   // Warm up backend on page load to avoid cold start delay
   useEffect(() => {
-    fetch(`${API_URL}/health`).catch(() => {
-      setTimeout(() => fetch(`${API_URL}/health`).catch(() => {}), 3000);
-    });
+    fetch(`${API_URL}/health`)
+      .then(() => setBackendReady(true))
+      .catch(() => {
+        // Retry once after 3s if first ping fails (cold start still booting)
+        setTimeout(() => {
+          fetch(`${API_URL}/health`)
+            .then(() => setBackendReady(true))
+            .catch(() => setBackendReady(false));
+        }, 3000);
+      });
   }, []);
 
   return (
@@ -33,6 +41,10 @@ function HomePage() {
             <span className="feature-tag">🔍 Deep Scanning</span>
             <span className="feature-tag">⚡ Real-time</span>
             <span className="feature-tag">🤖 AI Insights</span>
+          </div>
+          <div className={`backend-status ${backendReady ? 'ready' : 'warming'}`}>
+            <span className="status-dot"></span>
+            <span>{backendReady ? 'Backend Ready' : 'Warming up backend...'}</span>
           </div>
         </div>
         
