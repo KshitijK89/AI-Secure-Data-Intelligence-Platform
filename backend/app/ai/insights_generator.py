@@ -31,7 +31,6 @@ class InsightsGenerator:
     def __init__(self):
         self.gemini_key = os.getenv("GEMINI_API_KEY")
         self.groq_key = os.getenv("GROQ_API_KEY")
-        self.last_provider = "unknown"
         
         # Cache for insights to avoid redundant API calls
         self._cache = {}
@@ -92,19 +91,15 @@ class InsightsGenerator:
         cache_key = self._get_cache_key(findings, content_type)
         if cache_key in self._cache:
             print("Using cached insights")
-            cached_entry = self._cache[cache_key]
-            self.last_provider = cached_entry.get("provider", "unknown")
-            return cached_entry.get("insights", [])
+            return self._cache[cache_key]
         
         insights = None
-        self.last_provider = "rule_based"
         
         # Try Gemini first
         if self.gemini_enabled:
             try:
                 insights = self._generate_with_gemini(findings, content_type)
                 if insights:
-                    self.last_provider = "gemini"
                     self._update_cache(cache_key, insights)
                     return insights
             except Exception as e:
@@ -115,7 +110,6 @@ class InsightsGenerator:
             try:
                 insights = self._generate_with_groq(findings, content_type)
                 if insights:
-                    self.last_provider = "groq"
                     self._update_cache(cache_key, insights)
                     return insights
             except Exception as e:
@@ -123,7 +117,6 @@ class InsightsGenerator:
         
         # Final fallback: rule-based
         insights = self._generate_rule_based(findings, content_type)
-        self.last_provider = "rule_based"
         self._update_cache(cache_key, insights)
         return insights
     
@@ -132,34 +125,18 @@ class InsightsGenerator:
         Async version of generate for better performance in async contexts
         """
         if not findings:
-            self.last_provider = "not_applicable"
             return ["No security issues or sensitive data detected"]
         
         # Check cache first
         cache_key = self._get_cache_key(findings, content_type)
         if cache_key in self._cache:
             print("Using cached insights")
-            cached_entry = self._cache[cache_key]
-            self.last_provider = cached_entry.get("provider", "unknown")
-            return cached_entry.get("insights", [])
+            return self._cache[cache_key]
         
         # Run AI generation in executor to not block event loop
         loop = asyncio.get_event_loop()
         insights = await loop.run_in_executor(None, self.generate, content, findings, content_type)
         return insights
-
-    def get_last_provider(self) -> str:
-        """Return the provider used for the most recent generation."""
-        return self.last_provider
-
-    def get_provider_status(self) -> Dict[str, object]:
-        """Return configured provider availability and fallback order."""
-        return {
-            "gemini_enabled": self.gemini_enabled,
-            "groq_enabled": self.groq_enabled,
-            "default_order": ["gemini", "groq", "rule_based"],
-            "fallback": "rule_based"
-        }
     
     def _update_cache(self, key: str, value: List[str]):
         """Update cache with LRU eviction"""
@@ -167,10 +144,7 @@ class InsightsGenerator:
             # Remove oldest entry (simple FIFO for now)
             oldest = next(iter(self._cache))
             del self._cache[oldest]
-        self._cache[key] = {
-            "insights": value,
-            "provider": self.last_provider
-        }
+        self._cache[key] = value
     
     def _generate_with_gemini(self, findings: List[Dict], content_type: str) -> List[str]:
         """

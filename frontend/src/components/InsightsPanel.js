@@ -2,7 +2,7 @@ import React from 'react';
 import './InsightsPanel.css';
 
 const InsightsPanel = ({ insights }) => {
-  const { insights: insightList, summary, risk_level, risk_score, statistics, provider } = insights || {};
+  const { insights: insightList, summary, risk_level, risk_score, statistics } = insights || {};
 
   const getRiskColor = (level) => {
     const colors = {
@@ -34,11 +34,6 @@ const InsightsPanel = ({ insights }) => {
     <div className="insights-panel">
       <div className="panel-header">
         <h2>AI-Powered Insights</h2>
-        {provider && (
-          <div className="provider-badge" style={{ color: '#cbd5ff', fontSize: '0.85rem' }}>
-            Source: <strong>{provider.toUpperCase()}</strong>
-          </div>
-        )}
       </div>
 
       <div className="summary-section">

@@ -71,10 +71,7 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {
-        "status": "healthy",
-        "ai_provider_status": insights_generator.get_provider_status()
-    }
+    return {"status": "healthy"}
 
 
 @app.post("/analyze")
@@ -176,7 +173,6 @@ async def analyze(
         
         # Wait for both to complete in parallel
         risk_data, insights = await asyncio.gather(risk_future, insights_coro)
-        ai_provider = insights_generator.get_last_provider()
         
         # Policy Enforcement (depends on risk_data, so must run after)
         policy_result = policy_engine.enforce(
@@ -200,7 +196,6 @@ async def analyze(
             "risk_level": risk_data["risk_level"],
             "action": policy_result["action"],
             "insights": insights,
-            "ai_provider": ai_provider,
             "processed_content": policy_result.get("masked_content"),
             "statistics": {
                 "total_findings": len(findings),
@@ -214,7 +209,6 @@ async def analyze(
                 "summary": summary,
                 "risk_level": risk_data["risk_level"],
                 "risk_score": risk_data["risk_score"],
-                "provider": ai_provider,
                 "statistics": {
                     "total_findings": len(findings),
                     "critical": sum(1 for f in findings if f["risk"] == "critical"),
