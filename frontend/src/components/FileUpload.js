@@ -6,6 +6,14 @@ import './FileUpload.css';
 
 const API_URL = (() => {
   const configuredUrl = process.env.REACT_APP_API_URL;
+  const isLocalhost = typeof window !== 'undefined' && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+  if (isLocalhost) {
+    return configuredUrl && !configuredUrl.includes('your-backend-name.onrender.com')
+      ? configuredUrl
+      : 'http://127.0.0.1:8000';
+  }
+
   if (!configuredUrl || configuredUrl.includes('your-backend-name.onrender.com')) {
     return '/api';
   }
