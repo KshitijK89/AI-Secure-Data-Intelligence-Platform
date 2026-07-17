@@ -4,6 +4,9 @@ import json
 import hashlib
 from functools import lru_cache
 import asyncio
+from dotenv import load_dotenv
+
+load_dotenv()
 
 try:
     import google.generativeai as genai

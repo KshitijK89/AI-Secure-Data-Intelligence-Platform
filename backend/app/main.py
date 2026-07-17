@@ -27,13 +27,11 @@ app = FastAPI(
 )
 
 # CORS middleware
-allowed_origins_raw = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
-allowed_origins = [origin.strip() for origin in allowed_origins_raw.split(",") if origin.strip()]
-allow_all_origins = "*" in allowed_origins
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"] if allow_all_origins else allowed_origins,
-    allow_credentials=not allow_all_origins,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -63,7 +61,6 @@ class AnalyzeRequest(BaseModel):
 
 
 @app.get("/")
-@app.get("/api")
 async def root():
     return {
         "message": "AI Secure Data Intelligence Platform API",
@@ -73,13 +70,11 @@ async def root():
 
 
 @app.get("/health")
-@app.get("/api/health")
 async def health():
     return {"status": "healthy"}
 
 
 @app.post("/analyze")
-@app.post("/api/analyze")
 async def analyze(
     file: Optional[UploadFile] = File(None),
     content: Optional[str] = Form(None),
@@ -239,7 +234,6 @@ async def analyze(
 
 
 @app.post("/generate-report")
-@app.post("/api/generate-report")
 async def generate_pdf_report(report_data: dict):
     """
     Generate PDF report from analysis results
