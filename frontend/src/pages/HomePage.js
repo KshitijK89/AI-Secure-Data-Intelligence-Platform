@@ -8,14 +8,18 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 function HomePage() {
   const [activeTab, setActiveTab] = useState('file');
   const [backendReady, setBackendReady] = useState(false);
+  const [backendStatus, setBackendStatus] = useState('Checking backend...');
 
   // Warm up backend on page load to avoid cold start delay
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
     let retryTimer = null;
+    let attempts = 0;
+    const maxAttempts = 12;
 
     const pingBackend = async () => {
+      attempts += 1;
       try {
         const response = await fetch(`${API_URL}/health`, {
           cache: 'no-store',
@@ -23,17 +27,32 @@ function HomePage() {
         });
 
         if (isMounted && response.ok) {
+          const healthData = await response.json();
+          const providerStatus = healthData?.ai_provider_status || {};
+          const geminiState = providerStatus.gemini_enabled ? 'Gemini on' : 'Gemini off';
+          const groqState = providerStatus.groq_enabled ? 'Groq on' : 'Groq off';
           setBackendReady(true);
+          setBackendStatus(`${healthData.status || 'healthy'} · ${geminiState} · ${groqState}`);
           return;
+        }
+
+        if (isMounted) {
+          setBackendStatus(`Backend returned ${response.status}`);
         }
       } catch (error) {
         if (error.name === 'AbortError') {
           return;
         }
+
+        if (isMounted) {
+          setBackendStatus(`Backend check failed: ${error.message}`);
+        }
       }
 
-      if (isMounted) {
+      if (isMounted && attempts < maxAttempts) {
         retryTimer = setTimeout(pingBackend, 2000);
+      } else if (isMounted) {
+        setBackendStatus(`Backend unavailable after ${maxAttempts} attempts`);
       }
     };
 
@@ -93,7 +112,7 @@ function HomePage() {
 
       <div className={`backend-status ${backendReady ? 'ready' : 'warming'}`}>
         <span className="status-dot"></span>
-        <span>{backendReady ? 'Backend Ready' : 'Warming up backend...'}</span>
+        <span>{backendReady ? 'Backend Ready' : backendStatus}</span>
       </div>
     </div>
   );
