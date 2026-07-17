@@ -9,18 +9,40 @@ function HomePage() {
   const [activeTab, setActiveTab] = useState('file');
   const [backendReady, setBackendReady] = useState(false);
 
-  // Warm up backend on page load to avoid cold start delay
+  // Keep probing the backend until it responds so the status can recover
   useEffect(() => {
-    fetch(`${API_URL}/health`)
-      .then(() => setBackendReady(true))
-      .catch(() => {
-        // Retry once after 3s if first ping fails (cold start still booting)
-        setTimeout(() => {
-          fetch(`${API_URL}/health`)
-            .then(() => setBackendReady(true))
-            .catch(() => setBackendReady(false));
-        }, 3000);
-      });
+    let cancelled = false;
+    let intervalId = null;
+
+    const checkBackend = async () => {
+      try {
+        const response = await fetch(`${API_URL}/health`, { cache: 'no-store' });
+
+        if (!cancelled && response.ok) {
+          setBackendReady(true);
+
+          if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+          }
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setBackendReady(false);
+        }
+      }
+    };
+
+    checkBackend();
+    intervalId = setInterval(checkBackend, 3000);
+
+    return () => {
+      cancelled = true;
+
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
   }, []);
 
   return (
