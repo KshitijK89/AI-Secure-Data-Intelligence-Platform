@@ -11,16 +11,41 @@ function HomePage() {
 
   // Warm up backend on page load to avoid cold start delay
   useEffect(() => {
-    fetch(`${API_URL}/health`)
-      .then(() => setBackendReady(true))
-      .catch(() => {
-        // Retry once after 3s if first ping fails (cold start still booting)
-        setTimeout(() => {
-          fetch(`${API_URL}/health`)
-            .then(() => setBackendReady(true))
-            .catch(() => setBackendReady(false));
-        }, 3000);
-      });
+    let isMounted = true;
+    const controller = new AbortController();
+    let retryTimer = null;
+
+    const pingBackend = async () => {
+      try {
+        const response = await fetch(`${API_URL}/health`, {
+          cache: 'no-store',
+          signal: controller.signal,
+        });
+
+        if (isMounted && response.ok) {
+          setBackendReady(true);
+          return;
+        }
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          return;
+        }
+      }
+
+      if (isMounted) {
+        retryTimer = setTimeout(pingBackend, 2000);
+      }
+    };
+
+    pingBackend();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+      if (retryTimer) {
+        clearTimeout(retryTimer);
+      }
+    };
   }, []);
 
   return (

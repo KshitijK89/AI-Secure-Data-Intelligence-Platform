@@ -139,7 +139,9 @@ class InsightsGenerator:
         cache_key = self._get_cache_key(findings, content_type)
         if cache_key in self._cache:
             print("Using cached insights")
-            return self._cache[cache_key]
+            cached_entry = self._cache[cache_key]
+            self.last_provider = cached_entry.get("provider", "unknown")
+            return cached_entry.get("insights", [])
         
         # Run AI generation in executor to not block event loop
         loop = asyncio.get_event_loop()
