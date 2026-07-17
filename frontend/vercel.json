@@ -1,6 +1,12 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "build",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://ai-secure-backend.onrender.com/$1"
+    }
+  ],
   "routes": [
     {
       "src": "/static/(.*)",

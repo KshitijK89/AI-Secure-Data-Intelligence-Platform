@@ -53,7 +53,7 @@ function ResultsPage() {
 
       console.log('Sending report data:', reportData);
 
-      const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+      const API_URL = process.env.REACT_APP_API_URL || '/api';
       const response = await axios.post(
         `${API_URL}/generate-report`,
         reportData,
