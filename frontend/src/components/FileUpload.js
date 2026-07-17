@@ -4,6 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './FileUpload.css';
 
+const API_URL = (() => {
+  const configuredUrl = process.env.REACT_APP_API_URL;
+  if (!configuredUrl || configuredUrl.includes('your-backend-name.onrender.com')) {
+    return '/api';
+  }
+  return configuredUrl;
+})();
+
 const FileUpload = () => {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
@@ -45,8 +53,6 @@ const FileUpload = () => {
     formData.append('mask', options.mask);
     formData.append('block_high_risk', options.block_high_risk);
     formData.append('log_analysis', options.log_analysis);
-
-    const API_URL = process.env.REACT_APP_API_URL || '/api';
 
     try {
       const response = await axios.post(`${API_URL}/analyze`, formData, {

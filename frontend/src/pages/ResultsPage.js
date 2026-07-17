@@ -8,6 +8,14 @@ import RiskGauge from '../components/RiskGauge';
 import StatCard from '../components/StatCard';
 import './ResultsPage.css';
 
+const API_URL = (() => {
+  const configuredUrl = process.env.REACT_APP_API_URL;
+  if (!configuredUrl || configuredUrl.includes('your-backend-name.onrender.com')) {
+    return '/api';
+  }
+  return configuredUrl;
+})();
+
 function ResultsPage() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -53,7 +61,6 @@ function ResultsPage() {
 
       console.log('Sending report data:', reportData);
 
-      const API_URL = process.env.REACT_APP_API_URL || '/api';
       const response = await axios.post(
         `${API_URL}/generate-report`,
         reportData,

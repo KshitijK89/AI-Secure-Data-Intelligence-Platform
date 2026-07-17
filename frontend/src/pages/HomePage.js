@@ -3,7 +3,13 @@ import FileUpload from '../components/FileUpload';
 import ChatInput from '../components/ChatInput';
 import './HomePage.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+const API_URL = (() => {
+  const configuredUrl = process.env.REACT_APP_API_URL;
+  if (!configuredUrl || configuredUrl.includes('your-backend-name.onrender.com')) {
+    return '/api';
+  }
+  return configuredUrl;
+})();
 
 function HomePage() {
   const [activeTab, setActiveTab] = useState('file');
