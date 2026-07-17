@@ -63,6 +63,7 @@ class AnalyzeRequest(BaseModel):
 
 
 @app.get("/")
+@app.get("/api")
 async def root():
     return {
         "message": "AI Secure Data Intelligence Platform API",
@@ -72,11 +73,13 @@ async def root():
 
 
 @app.get("/health")
+@app.get("/api/health")
 async def health():
     return {"status": "healthy"}
 
 
 @app.post("/analyze")
+@app.post("/api/analyze")
 async def analyze(
     file: Optional[UploadFile] = File(None),
     content: Optional[str] = Form(None),
@@ -236,6 +239,7 @@ async def analyze(
 
 
 @app.post("/generate-report")
+@app.post("/api/generate-report")
 async def generate_pdf_report(report_data: dict):
     """
     Generate PDF report from analysis results
